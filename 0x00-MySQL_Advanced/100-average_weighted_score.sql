@@ -4,24 +4,13 @@ DROP PROCEDURE IF EXISTS ComputeAverageWeightedScoreForUser;
 DELIMITER $$
 CREATE PROCEDURE ComputeAverageWeightedScoreForUser(IN user_id INT)
 BEGIN
-    DECLARE total_score DECIMAL(10, 2);
-    DECLARE total_weight DE-- Initialize variables to store the total score and total weight
-    SET total_score = 0;
-    SET total_weight = 0;
-
-    -- Calculate the weighted average for the user
-    INSERT INTO user_weighted_scores (user_id, average_weighted_score)
-    SELECT
-        user_id,
-        SUM(score * weight) / SUM(weight)
-    FROM
-        scores
-    WHERE
-        user_id = user_id;
-
-    -- Commit the transaction
-    COMMIT;
-END$$
-
+    DECLARE w_avg_score FLOAT;
+    SET w_avg_score = (SELECT SUM(score * weight) / SUM(weight) 
+                        FROM users AS U 
+                        JOIN corrections as C ON U.id=C.user_id 
+                        JOIN projects AS P ON C.project_id=P.id 
+                        WHERE U.id=user_id);
+    UPDATE users SET average_score = w_avg_score WHERE id=user_id;
+END
+$$
 DELIMITER ;
-
