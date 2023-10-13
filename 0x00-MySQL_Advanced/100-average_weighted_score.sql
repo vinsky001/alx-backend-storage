@@ -1,13 +1,11 @@
 -- creates a stored procedure ComputeAverageWeightedScoreForUser that computes and store the average weighted score for a student.
 
+DROP PROCEDURE IF EXISTS ComputeAverageWeightedScoreForUser;
 DELIMITER $$
-
 CREATE PROCEDURE ComputeAverageWeightedScoreForUser(IN user_id INT)
 BEGIN
     DECLARE total_score DECIMAL(10, 2);
-    DECLARE total_weight DECIMAL(10, 2);
-
-    -- Initialize variables to store the total score and total weight
+    DECLARE total_weight DE-- Initialize variables to store the total score and total weight
     SET total_score = 0;
     SET total_weight = 0;
 
@@ -26,3 +24,4 @@ BEGIN
 END$$
 
 DELIMITER ;
+
